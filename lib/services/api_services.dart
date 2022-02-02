@@ -30,8 +30,7 @@ class ApiServices {
 
   //for a single category//
   Future singleCategoryData(String catName) async {
-    final singleCategoryUrl =
-        Uri.parse('https://fakestoreapi.com/products/category/$catName');
+    final singleCategoryUrl = Uri.parse('https://fakestoreapi.com/products/category/$catName');
     final response = await http.get(singleCategoryUrl);
     // print(response.body);
     return jsonDecode(response.body);
@@ -39,11 +38,24 @@ class ApiServices {
 
   //for cart//
   Future cartData(String userId) async {
-    final cartDataUrl =
-        Uri.parse('https://fakestoreapi.com/carts/$userId');
+    final cartDataUrl = Uri.parse('https://fakestoreapi.com/carts/$userId');
     final response = await http.get(cartDataUrl);
     // print(response.body);
     return jsonDecode(response.body);
   }
+
+  //POST request for userLogin//
+  Future userLogin(String username, password) async {
+    final loginUrl = Uri.parse('https://fakestoreapi.com/auth/login');
+    final response = await http.post(loginUrl, body: {
+      "username" : username,
+      "password" : password,
+    });
+    print(response.statusCode);
+    print(response.body);
+    return jsonDecode(response.body);
+  }
+
+
 
 }
