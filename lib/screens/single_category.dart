@@ -1,44 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_fake_store_api/screens/all_categories.dart';
-import 'package:flutter_fake_store_api/screens/product_details_screen.dart';
+import '../screens/product_details_screen.dart';
 import '../services/api_services.dart';
 
-class ProductsOverviewScreen extends StatelessWidget {
-  const ProductsOverviewScreen({Key? key}) : super(key: key);
+class SingleCategory extends StatelessWidget {
+  final String catName;
+  const SingleCategory({Key? key, required this.catName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('All Products'),
-          centerTitle: true,
-          actions: [
-            IconButton(
-              onPressed: ()=>Navigator.push(
-                context, MaterialPageRoute(builder: (context)=>
-                const AllCategories())
-              ),
-              icon: const Icon(Icons.view_list)
-            ),
-          ],
-        ),
-        body: FutureBuilder(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(catName.toUpperCase()),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: FutureBuilder(
           builder: (context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
               return Center(
                 child: ListView.builder(
                   itemBuilder: (context, index) {
                     return Padding(
-                      padding:  EdgeInsets.symmetric(
-                          horizontal: size.width/15,
-                          vertical: size.height/30),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: size.width / 15,
+                          vertical: size.height / 30),
                       child: ListTile(
                         leading: Image.network(
                           snapshot.data[index]['image'],
-                          height: size.height/8,
-                          width: size.width/8,
+                          height: size.height / 8,
+                          width: size.width / 8,
                         ),
                         title: Text(snapshot.data[index]['title'],
                             textAlign: TextAlign.left,
@@ -62,12 +53,13 @@ class ProductsOverviewScreen extends StatelessWidget {
                   itemCount: snapshot.data.length,
                 ),
               );
+
             }
             return const Center(
               child: CircularProgressIndicator(),
             );
           },
-          future: ApiServices().gettingAllData(),
+          future: ApiServices().singleCategoryData(catName),
         ),
       ),
     );

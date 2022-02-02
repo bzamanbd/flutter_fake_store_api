@@ -9,19 +9,18 @@ class ProductDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(),
-        body: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: size.height/20,
-                  horizontal: size.width/20
-                ),
+        child: Scaffold(
+      appBar: AppBar(),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: size.height / 20, horizontal: size.width / 20),
+              child: Center(
                 child: FutureBuilder(
                   builder: (context, AsyncSnapshot snapshot) {
                     if (snapshot.hasData) {
@@ -33,11 +32,9 @@ class ProductDetailsScreen extends StatelessWidget {
                             Image.network(
                               snapshot.data['image'],
                               width: double.infinity,
-                              height: size.height/2.5,
+                              height: size.height / 2.5,
                             ),
-                             SizedBox(
-                              height: size.height/40
-                            ),
+                            SizedBox(height: size.height / 40),
                             Row(
                               children: [
                                 const Expanded(
@@ -53,7 +50,7 @@ class ProductDetailsScreen extends StatelessWidget {
                                       fontSize: 17.0,
                                       fontWeight: FontWeight.w900,
                                       color: Theme.of(context).primaryColor,
-                                      height: size.height/400,
+                                      height: size.height / 400,
                                     ),
                                   ),
                                 ),
@@ -63,39 +60,55 @@ class ProductDetailsScreen extends StatelessWidget {
                               ],
                             ),
                             SizedBox(
-                              height: size.height/100,
+                              height: size.height / 100,
                             ),
-                            Text('Price : \$'+snapshot.data['price'].toString(),
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 14,
-                              decoration: TextDecoration.none,
-                              color: Colors.black87,
-                            ),
+                            Row(
+                              children: [
+                                const Expanded(child: SizedBox()),
+                                Text(
+                                  'Price : \$' +
+                                      snapshot.data['price'].toString(),
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    decoration: TextDecoration.none,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Expanded(
+                                    child: Chip(
+                                  label: Text(
+                                    snapshot.data['category'].toString(),
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontStyle: FontStyle.italic,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                  padding: const EdgeInsets.all(0.0),
+                                ))
+                              ],
                             ),
                             SizedBox(
-                              height: size.height/60,
+                              height: size.height / 60,
                             ),
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                horizontal: size.width/20,
+                                horizontal: size.width / 20,
                                 vertical: 0,
                               ),
-                              child: Text(snapshot.data['description'],
-                              textAlign: TextAlign.justify,
-                              style: TextStyle(
-                                fontSize: 14,
-                                height: size.height/400
-                              ),
+                              child: Text(
+                                snapshot.data['description'],
+                                textAlign: TextAlign.justify,
+                                style: TextStyle(
+                                    fontSize: 14, height: size.height / 400),
                               ),
                             ),
                           ],
                         ),
                       );
                     }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const Center(child: CircularProgressIndicator());
                   },
                   future: ApiServices().singleProductData(id),
                 ),
@@ -104,6 +117,14 @@ class ProductDetailsScreen extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: const Icon(Icons.add_shopping_cart_outlined),
+        mini: true,
+      ),
+      floatingActionButtonLocation:
+      FloatingActionButtonLocation.miniCenterDocked,
+    )
     );
   }
 }

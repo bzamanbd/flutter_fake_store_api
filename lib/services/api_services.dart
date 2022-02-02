@@ -19,4 +19,21 @@ class ApiServices {
     return jsonDecode(response.body);
   }
 
+  //for all Categories//
+  Future allCategoriesData() async {
+    final allCategoriestUrl =
+        Uri.parse('http://fakestoreapi.com/products/categories');
+    final response = await http.get(allCategoriestUrl);
+    // print(response.body);
+    return jsonDecode(response.body);
+  }
+
+  //for a single category//
+  Future singleCategoryData(String catName) async {
+    final singleCategoryUrl =
+        Uri.parse('https://fakestoreapi.com/products/category/$catName');
+    final response = await http.get(singleCategoryUrl);
+    // print(response.body);
+    return jsonDecode(response.body);
+  }
 }
