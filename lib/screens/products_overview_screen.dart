@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fake_store_api/screens/all_categories.dart';
+import 'package:flutter_fake_store_api/screens/cart_screen.dart';
 import 'package:flutter_fake_store_api/screens/product_details_screen.dart';
 import '../services/api_services.dart';
 
@@ -21,6 +22,13 @@ class ProductsOverviewScreen extends StatelessWidget {
                 const AllCategories())
               ),
               icon: const Icon(Icons.view_list)
+            ),
+            IconButton(
+              onPressed: ()=>Navigator.push(
+                context, MaterialPageRoute(builder: (context)=>
+                 const CartScreen(userId: '2'))
+              ),
+              icon: const Icon(Icons.shopping_cart)
             ),
           ],
         ),
