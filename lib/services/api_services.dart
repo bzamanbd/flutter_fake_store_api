@@ -75,11 +75,47 @@ class ApiServices {
   //DELETE request for update the Cart screen(click "remove from cart" button) //
   Future deleteCart(String userId) async {
     final deleteCartUrl = Uri.parse('https://fakestoreapi.com/carts/$userId');
-    final response = await http.delete(deleteCartUrl, body: {
-      "userId" : userId
-    });
+    final response = await http.delete(deleteCartUrl, body: {"userId": userId});
     print(response.statusCode); //uncomment and check DEBUG CONSOLE//
     print(response.body);
     return jsonDecode(response.body);
+  }
+
+  //POST request for the Basic Authentication(using: "username" & "password" sending in body pararmeter). this is the 1st way of Basic Authentication//
+  Future basicAuth(String username, password) async {
+    final basicAuthUrl = Uri.parse('https://api.somewhere.io'); //a fake url//
+    final response = await http
+        .post(basicAuthUrl, body: {"username": username, "password": password});
+    print(response.statusCode); //uncomment and check DEBUG CONSOLE//
+    print(response.body);
+    // return jsonDecode(response.body);
+  }
+
+  //GET request for the Basic Authentication(sending details in Authorization Header). this is the 2nd way of Basic Authentication//
+  Future userAuthorization(String username, password) async {
+    final authUrl = Uri.parse('https://api.somewhere.io'); //a fake url//
+    String baicAuth = "Basic" +
+        base64Encode(utf8.encode(
+            "$username : $password")); //(need to remember this line of code)
+    final response = await http.get(authUrl, headers: {
+      "content-type": "application/json",
+      "authorization": baicAuth
+    });
+    print(response.statusCode); //uncomment and check DEBUG CONSOLE//
+    print(response.body);
+    // return jsonDecode(response.body);
+  }
+
+  //Bearer Authentication(the second type of authentication)//using("token" in header) instead of username,password//
+  Future userAuthentication() async {
+    final authUrl = Uri.parse('https://api.somewhere.io'); //a fake url//
+    const accessToken = "some token value";//just think you have a token value//
+    final response = await http.get(authUrl, headers: {
+      "content-type": "application/json",
+      "authorization": "Bearer $accessToken",//check the Api Keys and values//
+    });
+    print(response.statusCode); //uncomment and check DEBUG CONSOLE//
+    print(response.body);
+    // return jsonDecode(response.body);
   }
 }
