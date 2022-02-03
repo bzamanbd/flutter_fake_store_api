@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_fake_store_api/services/api_services.dart';
+import '../models/product.dart';
+import '../services/api_services.dart';
 
 class CartScreen extends StatelessWidget {
   final String userId;
@@ -25,17 +26,18 @@ class CartScreen extends StatelessWidget {
                       child: FutureBuilder(
                         builder: (context, AsyncSnapshot asyncSnapshot) {
                           if (asyncSnapshot.hasData) {
+                            Product product = asyncSnapshot.data;
                             return Padding(
                               padding: EdgeInsets.symmetric(
                                   vertical: size.height / 100,
                                   horizontal: size.width / 200),
                               child: ListTile(
                                 minVerticalPadding: size.height / 80,
-                                title: Text(asyncSnapshot.data['title']),
+                                title: Text(product.title),
                                 subtitle: Text('Quantity : ' +
                                     products[index]['quantity'].toString()),
                                 leading: Image.network(
-                                  asyncSnapshot.data['image'],
+                                  product.image,
                                   height: 50,
                                   width: 50,
                                 ),
@@ -44,10 +46,14 @@ class CartScreen extends StatelessWidget {
                                       ApiServices().deleteCart('userId');
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
-                                              const SnackBar(content: Text('Item is deleted', textAlign: TextAlign.center,),
-                                              backgroundColor: Colors.red,
-                                              ),
-                                              );
+                                        const SnackBar(
+                                          content: Text(
+                                            'Item is deleted',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
                                     },
                                     icon: const Icon(
                                       Icons.delete,

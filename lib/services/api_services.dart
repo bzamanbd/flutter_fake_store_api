@@ -2,21 +2,36 @@
 
 import 'dart:convert';
 
+import '../models/product.dart';
 import 'package:http/http.dart' as http;
 
 class ApiServices {
   //for allproducts//
-  Future gettingAllData() async {
+  Future<List<Product>> gettingAllData() async {
     final allProductsUrl = Uri.parse('https://fakestoreapi.com/products');
     final response = await http.get(allProductsUrl);
-    return jsonDecode(response.body);
+    List<Product> allProducts = [];
+    List body = jsonDecode(response.body);
+    // ignore: avoid_function_literals_in_foreach_calls
+    // body.forEach((product) {
+    //   allProducts.add(Product.fromJson(product));
+    // });
+    for (var product in body) {
+      allProducts.add(Product.fromJson(product));
+    }
+    // print(response.statusCode);
+    // print(response.body);
+    return allProducts;
   }
 
   //for a single product//
   Future singleProductData(int id) async {
     final singleProductUrl = Uri.parse('https://fakestoreapi.com/products/$id');
     final response = await http.get(singleProductUrl);
-    return jsonDecode(response.body);
+    // print(response.statusCode);
+    // print(response.body);
+    var body = jsonDecode(response.body);
+    return Product.fromJson(body);
   }
 
   //for all Categories//
@@ -24,6 +39,7 @@ class ApiServices {
     final allCategoriestUrl =
         Uri.parse('http://fakestoreapi.com/products/categories');
     final response = await http.get(allCategoriestUrl);
+    // print(response.statusCode);
     // print(response.body);
     return jsonDecode(response.body);
   }
@@ -33,6 +49,7 @@ class ApiServices {
     final singleCategoryUrl =
         Uri.parse('https://fakestoreapi.com/products/category/$catName');
     final response = await http.get(singleCategoryUrl);
+    // print(response.statusCode);
     // print(response.body);
     return jsonDecode(response.body);
   }
@@ -41,6 +58,7 @@ class ApiServices {
   Future cartData(String userId) async {
     final cartDataUrl = Uri.parse('https://fakestoreapi.com/carts/$userId');
     final response = await http.get(cartDataUrl);
+    // print(response.statusCode);
     // print(response.body);
     return jsonDecode(response.body);
   }
@@ -86,9 +104,9 @@ class ApiServices {
     final basicAuthUrl = Uri.parse('https://api.somewhere.io'); //a fake url//
     final response = await http
         .post(basicAuthUrl, body: {"username": username, "password": password});
-    print(response.statusCode); //uncomment and check DEBUG CONSOLE//
-    print(response.body);
-    // return jsonDecode(response.body);
+    // print(response.statusCode); //uncomment and check DEBUG CONSOLE//
+    // print(response.body);
+    return jsonDecode(response.body);
   }
 
   //GET request for the Basic Authentication(sending details in Authorization Header). this is the 2nd way of Basic Authentication//
@@ -101,21 +119,22 @@ class ApiServices {
       "content-type": "application/json",
       "authorization": baicAuth
     });
-    print(response.statusCode); //uncomment and check DEBUG CONSOLE//
-    print(response.body);
-    // return jsonDecode(response.body);
+    // print(response.statusCode); //uncomment and check DEBUG CONSOLE//
+    // print(response.body);
+    return jsonDecode(response.body);
   }
 
   //Bearer Authentication(the second type of authentication)//using("token" in header) instead of username,password//
   Future userAuthentication() async {
     final authUrl = Uri.parse('https://api.somewhere.io'); //a fake url//
-    const accessToken = "some token value";//just think you have a token value//
+    const accessToken =
+        "some token value"; //just think you have a token value//
     final response = await http.get(authUrl, headers: {
       "content-type": "application/json",
-      "authorization": "Bearer $accessToken",//check the Api Keys and values//
+      "authorization": "Bearer $accessToken", //check the Api Keys and values//
     });
-    print(response.statusCode); //uncomment and check DEBUG CONSOLE//
-    print(response.body);
-    // return jsonDecode(response.body);
+    // print(response.statusCode); //uncomment and check DEBUG CONSOLE//
+    // print(response.body);
+    return jsonDecode(response.body);
   }
 }

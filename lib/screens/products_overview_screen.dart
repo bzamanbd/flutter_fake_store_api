@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_fake_store_api/screens/all_categories.dart';
-import 'package:flutter_fake_store_api/screens/cart_screen.dart';
-import 'package:flutter_fake_store_api/screens/product_details_screen.dart';
+import '../models/product.dart';
+import '../screens/all_categories.dart';
+import '../screens/cart_screen.dart';
+import '../screens/product_details_screen.dart';
 import '../services/api_services.dart';
 
 class ProductsOverviewScreen extends StatelessWidget {
@@ -17,19 +18,17 @@ class ProductsOverviewScreen extends StatelessWidget {
           centerTitle: true,
           actions: [
             IconButton(
-              onPressed: ()=>Navigator.push(
-                context, MaterialPageRoute(builder: (context)=>
-                const AllCategories())
-              ),
-              icon: const Icon(Icons.view_list)
-            ),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AllCategories())),
+                icon: const Icon(Icons.view_list)),
             IconButton(
-              onPressed: ()=>Navigator.push(
-                context, MaterialPageRoute(builder: (context)=>
-                 const CartScreen(userId: '2'))
-              ),
-              icon: const Icon(Icons.shopping_cart)
-            ),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CartScreen(userId: '2'))),
+                icon: const Icon(Icons.shopping_cart)),
           ],
         ),
         body: FutureBuilder(
@@ -38,17 +37,19 @@ class ProductsOverviewScreen extends StatelessWidget {
               return Center(
                 child: ListView.builder(
                   itemBuilder: (context, index) {
+                    //converting single product with index//
+                    Product product = snapshot.data[index];
                     return Padding(
-                      padding:  EdgeInsets.symmetric(
-                          horizontal: size.width/15,
-                          vertical: size.height/30),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: size.width / 15,
+                          vertical: size.height / 30),
                       child: ListTile(
                         leading: Image.network(
-                          snapshot.data[index]['image'],
-                          height: size.height/8,
-                          width: size.width/8,
+                          product.image,
+                          height: size.height / 8,
+                          width: size.width / 8,
                         ),
-                        title: Text(snapshot.data[index]['title'],
+                        title: Text(product.title,
                             textAlign: TextAlign.left,
                             style: TextStyle(
                               fontSize: 14.0,
@@ -56,13 +57,13 @@ class ProductsOverviewScreen extends StatelessWidget {
                               color: Theme.of(context).primaryColor,
                             )),
                         subtitle: Text('Price: \$' +
-                            snapshot.data[index]['price'].toString()),
+                            product.price.toString()),
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ProductDetailsScreen(
-                                      id: snapshot.data[index]['id'])));
+                                      id: product.id)));
                         },
                       ),
                     );

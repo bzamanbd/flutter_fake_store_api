@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_fake_store_api/services/api_services.dart';
+import '../models/product.dart';
+import '../services/api_services.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final int id;
@@ -18,13 +19,14 @@ class ProductDetailsScreen extends StatelessWidget {
           child: FutureBuilder(
             builder: (context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
+                Product product = snapshot.data;
                 return Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Image.network(
-                        snapshot.data['image'],
+                        product.image,
                         width: double.infinity,
                         height: size.height / 2.5,
                       ),
@@ -37,7 +39,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           Expanded(
                             flex: 8,
                             child: Text(
-                              snapshot.data['title'],
+                              product.title,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontStyle: FontStyle.normal,
@@ -60,7 +62,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         children: [
                           const Expanded(child: SizedBox()),
                           Text(
-                            'Price : \$' + snapshot.data['price'].toString(),
+                            'Price : \$' + product.price.toString(),
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 14,
@@ -71,7 +73,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           Expanded(
                               child: Chip(
                             label: Text(
-                              snapshot.data['category'].toString(),
+                              product.category.toString(),
                               style: TextStyle(
                                 fontSize: 11,
                                 fontStyle: FontStyle.italic,
@@ -91,7 +93,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           vertical: 0,
                         ),
                         child: Text(
-                          snapshot.data['description'],
+                          product.description,
                           textAlign: TextAlign.justify,
                           style: TextStyle(
                               fontSize: 14, height: size.height / 400),
@@ -110,12 +112,13 @@ class ProductDetailsScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await ApiServices().updateCart(2, id);
-          ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('Product is added',
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text(
+              'Product is added',
               textAlign: TextAlign.center,
-              ),
-              backgroundColor: Colors.green,
-              ));
+            ),
+            backgroundColor: Colors.green,
+          ));
         },
         child: const Icon(Icons.add_shopping_cart_outlined),
         mini: true,
