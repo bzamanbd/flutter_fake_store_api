@@ -30,7 +30,8 @@ class ApiServices {
 
   //for a single category//
   Future singleCategoryData(String catName) async {
-    final singleCategoryUrl = Uri.parse('https://fakestoreapi.com/products/category/$catName');
+    final singleCategoryUrl =
+        Uri.parse('https://fakestoreapi.com/products/category/$catName');
     final response = await http.get(singleCategoryUrl);
     // print(response.body);
     return jsonDecode(response.body);
@@ -48,14 +49,37 @@ class ApiServices {
   Future userLogin(String username, password) async {
     final loginUrl = Uri.parse('https://fakestoreapi.com/auth/login');
     final response = await http.post(loginUrl, body: {
-      "username" : username,
-      "password" : password,
+      "username": username,
+      "password": password,
     });
-    print(response.statusCode);
-    print(response.body);
+    // print(response.statusCode);
+    // print(response.body);
     return jsonDecode(response.body);
   }
 
+  //PUT request for update the Cart Screen(click "add to cart" button) //
+  Future updateCart(int userId, productId) async {
+    final updateCartUrl = Uri.parse('https://fakestoreapi.com/carts/$userId');
+    final response = await http.put(updateCartUrl, body: {
+      "userId": "$userId",
+      "date": DateTime.now().toString(),
+      "products": [
+        {"productId": "$productId", "quantity": "1"}
+      ].toString()
+    });
+    // print(response.statusCode); //uncomment and check DEBUG CONSOLE//
+    // print(response.body);
+    return jsonDecode(response.body);
+  }
 
-
+  //DELETE request for update the Cart screen(click "remove from cart" button) //
+  Future deleteCart(String userId) async {
+    final deleteCartUrl = Uri.parse('https://fakestoreapi.com/carts/$userId');
+    final response = await http.delete(deleteCartUrl, body: {
+      "userId" : userId
+    });
+    print(response.statusCode); //uncomment and check DEBUG CONSOLE//
+    print(response.body);
+    return jsonDecode(response.body);
+  }
 }

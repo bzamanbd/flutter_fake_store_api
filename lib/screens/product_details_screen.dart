@@ -60,8 +60,7 @@ class ProductDetailsScreen extends StatelessWidget {
                         children: [
                           const Expanded(child: SizedBox()),
                           Text(
-                            'Price : \$' +
-                                snapshot.data['price'].toString(),
+                            'Price : \$' + snapshot.data['price'].toString(),
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               fontSize: 14,
@@ -109,13 +108,20 @@ class ProductDetailsScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          await ApiServices().updateCart(2, id);
+          ScaffoldMessenger.of(context)
+              .showSnackBar(const SnackBar(content: Text('Product is added',
+              textAlign: TextAlign.center,
+              ),
+              backgroundColor: Colors.green,
+              ));
+        },
         child: const Icon(Icons.add_shopping_cart_outlined),
         mini: true,
       ),
       floatingActionButtonLocation:
-      FloatingActionButtonLocation.miniCenterDocked,
-    )
-    );
+          FloatingActionButtonLocation.miniCenterDocked,
+    ));
   }
 }

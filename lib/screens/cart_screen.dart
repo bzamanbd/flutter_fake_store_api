@@ -27,10 +27,10 @@ class CartScreen extends StatelessWidget {
                           if (asyncSnapshot.hasData) {
                             return Padding(
                               padding: EdgeInsets.symmetric(
-                                  vertical: size.height/100,
-                                  horizontal: size.width/200),
+                                  vertical: size.height / 100,
+                                  horizontal: size.width / 200),
                               child: ListTile(
-                                minVerticalPadding: size.height/80,
+                                minVerticalPadding: size.height / 80,
                                 title: Text(asyncSnapshot.data['title']),
                                 subtitle: Text('Quantity : ' +
                                     products[index]['quantity'].toString()),
@@ -40,7 +40,15 @@ class CartScreen extends StatelessWidget {
                                   width: 50,
                                 ),
                                 trailing: IconButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      ApiServices().deleteCart('userId');
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                              const SnackBar(content: Text('Item is deleted', textAlign: TextAlign.center,),
+                                              backgroundColor: Colors.red,
+                                              ),
+                                              );
+                                    },
                                     icon: const Icon(
                                       Icons.delete,
                                       color: Colors.red,
