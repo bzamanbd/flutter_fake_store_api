@@ -1,9 +1,6 @@
 // ignore_for_file: avoid_print
-
 import 'dart:convert';
-
 import '../models/fruit.dart';
-
 import '../models/product.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,18 +9,19 @@ class ApiServices {
   Future<List<Product>> gettingAllData() async {
     final allProductsUrl = Uri.parse('https://fakestoreapi.com/products');
     final response = await http.get(allProductsUrl);
-    List<Product> allProducts = [];
     List body = jsonDecode(response.body);
-    // ignore: avoid_function_literals_in_foreach_calls
-    // body.forEach((product) {
+    // List<Product> allProducts = [];
+    // for (var product in body) {
     //   allProducts.add(Product.fromJson(product));
-    // });
-    for (var product in body) {
-      allProducts.add(Product.fromJson(product));
-    }
+    // }
+    // return allProducts;
+
+    ///we can convert above 4 lines in one line///
+    List<Product> allProducts =
+        body.map((product) => Product.fromJson(product)).toList();
+    return allProducts;
     // print(response.statusCode);
     // print(response.body);
-    return allProducts;
   }
 
   //for a single product//
@@ -145,16 +143,17 @@ class ApiServices {
     final allFruitsUrl = Uri.parse('https://www.fruityvice.com/api/fruit/all');
     final response = await http.get(allFruitsUrl);
     List body = jsonDecode(response.body);
-    // List allFruits = [];
-    // for (var fruit in body) {
-    //   allFruits.add(Fruit.fromJson(fruit));
-    // }
-
-    ///above the three lines,we can convert these in a single line///
-    List<Fruit> allFruits = body.map((fruit) => Fruit.fromJson(fruit)).toList();
-
+    List<Fruit> allFruits = [];
+    for (var fruit in body) {
+      allFruits.add(Fruit.fromJson(fruit));
+    }
     print(response.statusCode);
     print(response.body);
     return allFruits;
   }
+
+  ///above the three lines,we can convert these in a single line///
+  // List<Fruit> allFruits = body.map((fruit) => Fruit.fromJson(fruit)).toList();
+  // return allFruits;
+
 }

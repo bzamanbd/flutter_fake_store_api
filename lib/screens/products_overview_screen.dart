@@ -31,52 +31,54 @@ class ProductsOverviewScreen extends StatelessWidget {
                 icon: const Icon(Icons.shopping_cart)),
           ],
         ),
-        body: FutureBuilder(
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return Center(
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    //converting single product with index//
-                    Product product = snapshot.data[index];
-                    return Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: size.width / 15,
-                          vertical: size.height / 30),
-                      child: ListTile(
-                        leading: Image.network(
-                          product.image,
-                          height: size.height / 8,
-                          width: size.width / 8,
+        body: Center(
+          child: FutureBuilder(
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return Center(
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {
+                      //converting single product with index//
+                      Product product = snapshot.data[index];
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: size.width / 15,
+                            vertical: size.height / 30),
+                        child: ListTile(
+                          leading: Image.network(
+                            product.image,
+                            height: size.height / 8,
+                            width: size.width / 8,
+                          ),
+                          title: Text(product.title,
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor,
+                              )),
+                          subtitle: Text('Price: \$' +
+                              product.price.toString()),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProductDetailsScreen(
+                                        id: product.id)));
+                          },
                         ),
-                        title: Text(product.title,
-                            textAlign: TextAlign.left,
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).primaryColor,
-                            )),
-                        subtitle: Text('Price: \$' +
-                            product.price.toString()),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProductDetailsScreen(
-                                      id: product.id)));
-                        },
-                      ),
-                    );
-                  },
-                  itemCount: snapshot.data.length,
-                ),
+                      );
+                    },
+                    itemCount: snapshot.data.length,
+                  ),
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
               );
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-          future: ApiServices().gettingAllData(),
+            },
+            future: ApiServices().gettingAllData(),
+          ),
         ),
       ),
     );

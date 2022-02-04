@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import '../screens/login_screen.dart';
-import '../screens/fruits_overview.dart';
+import '../screens/login_screen.dart';
+// import '../screens/fruits_overview.dart';
 void main() => runApp(const MyApp());
 class MyApp extends StatelessWidget {
   final String _title='Fake Store Api';
@@ -13,8 +13,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.pink
       ),
-      // home: LoginScreen(),
-      home: const FruitsOverviewScreen(),
+      home: LoginScreen(),
+      // home: const FruitsOverviewScreen(),
     );
   }
 }
