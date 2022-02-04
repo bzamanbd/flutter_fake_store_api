@@ -2,6 +2,8 @@
 
 import 'dart:convert';
 
+import '../models/fruit.dart';
+
 import '../models/product.dart';
 import 'package:http/http.dart' as http;
 
@@ -136,5 +138,23 @@ class ApiServices {
     // print(response.statusCode); //uncomment and check DEBUG CONSOLE//
     // print(response.body);
     return jsonDecode(response.body);
+  }
+
+  //Get for getting all fruits//
+  Future<List<Fruit>> getAllFruits() async {
+    final allFruitsUrl = Uri.parse('https://www.fruityvice.com/api/fruit/all');
+    final response = await http.get(allFruitsUrl);
+    List body = jsonDecode(response.body);
+    // List allFruits = [];
+    // for (var fruit in body) {
+    //   allFruits.add(Fruit.fromJson(fruit));
+    // }
+
+    ///above the three lines,we can convert these in a single line///
+    List<Fruit> allFruits = body.map((fruit) => Fruit.fromJson(fruit)).toList();
+
+    print(response.statusCode);
+    print(response.body);
+    return allFruits;
   }
 }

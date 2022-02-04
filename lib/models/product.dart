@@ -13,14 +13,20 @@ class Product {
     required this.image,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) {
-    return Product(
-        id: json['id'],
-        price: json['price'],
-        title: json['title'],
-        description: json['description'],
-        category: json['category'],
-        image: json['image']
-    );
-  }
+  factory Product.fromJson(Map<String, dynamic> json) => Product(
+      id: json['id'],
+      price: json['price'],
+      title: json['title'],
+      description: json['description'],
+      category: json['category'],
+      image: json['image']);
+
+  Map<String, dynamic> toJson() => {
+    'id':id,
+    'price': price,
+    'title': title,
+    'description': description,
+    'category': category,
+    'image': image,
+  };
 }
